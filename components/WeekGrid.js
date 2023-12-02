@@ -10,8 +10,11 @@ export function WeekGrid({ navigation }) {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "tasks"), (querySnapshot) => {
-      const taskList = querySnapshot.docs.map((doc) => doc.data());
+    const unsubscribe = onSnapshot(collection(db, 'tasks'), (querySnapshot) => {
+      const taskList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
       setCards(taskList);
     });
 
@@ -19,6 +22,7 @@ export function WeekGrid({ navigation }) {
     return () => unsubscribe();
   }, []);
 
+  
   // Dummy data for the grid
   const days = [];
   for (var i = 0; i < 8; i++) {
@@ -59,7 +63,7 @@ export function WeekGrid({ navigation }) {
     "11 pm",
   ];
 
-  const numRows = 14;
+  const numRows = 18;
   const numCols = 8;
   var fcv = 0;
 
@@ -109,19 +113,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cell: {
-    width: 106,
-    height: 100,
+    flex: 1,
+    width:106,
     borderWidth: 1,
-    borderColor: "red",
+    borderColor: "#ddd", // Use a lighter color for borders
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
+    backgroundColor: "white", // Add a background color
+    minHeight: 130,
   },
   fc: {
     width: 45,
     height: 100,
     borderWidth: 1,
-    borderColor: "red",
+    borderColor: "#ddd",
     alignItems: "center",
+    backgroundColor: "#f0f0f0"
   },
 });

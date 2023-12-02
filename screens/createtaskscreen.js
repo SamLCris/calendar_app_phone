@@ -31,6 +31,7 @@ export const CreateTaskScreen = ({ navigation }) => {
       hour: state.hour,
     });
     navigation.navigate("TaskScreen");
+    console.log(state.hour)
   }
 
   const handleDatePress = () => {

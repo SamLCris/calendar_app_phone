@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-export function TaskCard({ ri, ci, cards, navigation }) {
-  const HandleTouch = () => {
+export function TaskCard({ ri, ci, cards,navigation}) {
+
+  const HandleTouch = (index) => {
     navigation.navigate("EditTaskScreen", { index: index });
   };
 
@@ -18,6 +19,8 @@ export function TaskCard({ ri, ci, cards, navigation }) {
   return (
     <View style={styles.container}>
       {cards.map((card, index) => {
+        
+ 
         const options = { weekday: "long" };
         const new_date = card.date
           .toDate()
@@ -41,24 +44,28 @@ export function TaskCard({ ri, ci, cards, navigation }) {
         }
 
         let hour = card.hour;
+        
         if (hour >= 6 && hour <= 12) {
           hour = hour - 5;
         } else if (hour >= 1 && hour <= 5) {
           hour = hour + 7;
+        } else if (hour >= 16 && hour <= 22) {
+          hour = hour - 5;
         }
 
         return hour === ri && day === ci ? (
-          <View key={`${index} ${ri}`} onTouchStart={HandleTouch}>
+          <View key={`${index} `} onTouchStart={() => HandleTouch(card.id)}>
             <Text style={styles.title}>{card.title}</Text>
             <Text>{card.description}</Text>
           </View>
         ) : (
-          <View key={`${index} ${ri}`} />
+          <View key={`${index} `} />
         );
       })}
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -69,13 +76,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    flex: 1,
     elevation: 5,
+    overflow: "hidden",
   },
   title: {
     fontSize: 20,
